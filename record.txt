@@ -1,0 +1,14 @@
+Init
+red 1 4
+blue 7 4
+red 2 4
+blue 6 4
+red 3 4
+wall 1 1
+red 4 4
+blue 5 4
+red 6 4
+blue 4 4
+red 7 4
+wall 13 2
+red 8 4
