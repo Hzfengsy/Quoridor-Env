@@ -23,7 +23,7 @@ Return the state and the result.
 def findPath(self, ai):
 	return copy.deepcopy(min_dis), copy.deepcopy(min_path)
 ```
-Get the shortest distance and the shortPath to the destination.  
+Get the shortest distance and the shortPath to the destination.  
 Return the shortest distance and the next step
 
 # Code rule
