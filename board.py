@@ -39,9 +39,9 @@ class Board(object):
                             fill(nw_pos[0], nw_pos[1])
             fill(s[0], s[1])
             # print(vis)
-            if cnt == 0 and not (True in [vis[18][i] for i in range(2, 20, 2)]):
+            if not (True in [vis[18][i] for i in range(2, 20, 2)]):
                 return False
-            if cnt == 1 and not (True in [vis[2][i] for i in range(2, 20, 2)]):
+            if not (True in [vis[2][i] for i in range(2, 20, 2)]):
                 return False
             cnt += 1
         return True

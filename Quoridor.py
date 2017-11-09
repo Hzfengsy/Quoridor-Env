@@ -31,10 +31,10 @@ class Quoridor(object):
         self.record_json['step'] = []
         ins = ""
         if turn == 1:
-            res = self.step_ai()
+            result = self.step_ai()
         else:
-            res = self.nw.result()
-        return copy.deepcopy(self.state(0)), copy.deepcopy(res)
+            result = self.nw.result()
+        return copy.deepcopy(self.state(0)), copy.deepcopy(result)
 
     def state(self, id):
         length = 20
