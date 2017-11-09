@@ -64,9 +64,9 @@ class Quoridor(object):
             res = self.nw.update([19 - x, y + 1])
         self.steps += 1
         if res != True:
-            self.err[ai] = "Invalid"
+            self.err[ai] = res
             self.finish(ai ^ 1)
-            return "Invalid"
+            return ai ^ 1
         if self.nw.result() < 2:
             ans = 1 - self.nw.result() if self.should_reverse else self.nw.result()
             self.finish(ans)
