@@ -38,8 +38,7 @@ class Quoridor(object):
             f.write("Init\n")
         if self.ai != '' and type(self.ai.ai) is not dict:
             self.ai.ai.exit()
-        # self.ai_id = random.randint(0, self.ai_num)
-        self.ai_id = 5
+        self.ai_id = random.randint(0, self.ai_num)
         self.err = ['', '']
         self.record_json = {}
         self.running = True
