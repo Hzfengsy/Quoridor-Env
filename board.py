@@ -162,21 +162,3 @@ class Board(object):
             return 1
         else:
             return 2
-
-'''
-
-# Test
-ddd = {}
-ddd['step'] = []
-b = Board(ddd)
-np.set_printoptions(threshold=np.nan)
-while (True):
-    print(b.loc, b.side)
-    print(b.board.astype(int))
-    temp = input()
-    temp = temp.split()
-    temp = list(map(int, temp))
-    rec = b.update(temp)
-    print('rec: ', rec)
-
-'''
