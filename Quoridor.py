@@ -66,9 +66,7 @@ class Quoridor(object):
         if turn == 1:
             result = self.step_ai()
             xx, yy = map(int, self.ins.split())
-            print(xx, yy)
             k = self.change_from_loc(xx, yy) if result == 2 else -1
-            print(k)
         else:
             result = self.nw.result()
             k = -1
@@ -206,7 +204,5 @@ class Quoridor(object):
             return copy.deepcopy(self.state(0)), copy.deepcopy(result), copy.deepcopy(opp_state), copy.deepcopy(-1)
         result = self.step_ai()
         xx, yy = map(int, self.ins.split())
-        print(xx, yy)
         k = self.change_from_loc(xx, yy) if result == 2 else -1
-        print(k)
         return copy.deepcopy(self.state(0)), copy.deepcopy(result), copy.deepcopy(opp_state), copy.deepcopy(k)
