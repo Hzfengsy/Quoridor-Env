@@ -49,23 +49,31 @@ class Quoridor(object):
         self.record_json['id'] = [turn, 1 - turn]
         self.record_json['step'] = []
         self.ins = ""
+        opp_state = self.state(1)
         if self.ai_id == 0:
             self.record_json['user'] = ["training", "short_path"]
         else:
             self.ai = AI(exec_file + str(self.ai_id), 1, self.pros)
             suc = self.ai.load()
             if not suc:
-                return self.finish(0)
+                print("fail")
+                return copy.deepcopy(self.state(0)), copy.deepcopy(self.finish(0)), copy.deepcopy(opp_state), copy.deepcopy(-1)
             suc = self.ai.init(1- turn)
             if not suc:
-                return self.finish(0)
+                print("fail2")
+                return copy.deepcopy(self.state(0)), copy.deepcopy(self.finish(0)), copy.deepcopy(opp_state), copy.deepcopy(-1)
             self.record_json['user'] = ["training", self.ai.name]
         if turn == 1:
             result = self.step_ai()
+            xx, yy = map(int, self.ins.split())
+            print(xx, yy)
+            k = self.change_from_loc(xx, yy) if result == 2 else -1
+            print(k)
         else:
             result = self.nw.result()
+            k = -1
         
-        return copy.deepcopy(self.state(0)), copy.deepcopy(result)
+        return copy.deepcopy(self.state(0)), copy.deepcopy(result), copy.deepcopy(opp_state), copy.deepcopy(k)
 
     def state(self, id):
         length = 20
@@ -93,8 +101,12 @@ class Quoridor(object):
             self.ins = str(x + 1) + ' ' + str(y + 1)
             res = self.nw.update([x + 1, y + 1])
         else:
-            self.ins = str(19 - x) + ' ' + str(y + 1)
-            res = self.nw.update([19 - x, y + 1])
+            if x % 2 == 1 and y % 2 == 0:
+                self.ins = str(17 - x) + ' ' + str(y + 1)
+                res = self.nw.update([17 - x, y + 1])
+            else:
+                self.ins = str(19 - x) + ' ' + str(y + 1)
+                res = self.nw.update([19 - x, y + 1])
         self.steps += 1
         if res != True:
             self.err[ai] = res
@@ -110,7 +122,7 @@ class Quoridor(object):
         self.record_json['total'] = self.steps
         self.record_json['result'] = winner
         self.record_json['err'] = [self.err, ' ']
-        if type(self.ai.ai) is not dict:
+        if self.ai != '' and type(self.ai.ai) is not dict:
             self.ai.ai.exit()
 
         json_out = open('result' + str(self.pros) + '.json' , 'w')
@@ -158,6 +170,9 @@ class Quoridor(object):
             if now_dis < min_dis:
                 min_dis = now_dis
                 min_path = path[(17, i)][1]
+        if min_path == ():
+            print(self.record_json)
+            min_path = pos
         return copy.deepcopy(min_dis), copy.deepcopy(min_path)
 
     def wall_pos(self, kind):
@@ -168,6 +183,17 @@ class Quoridor(object):
         else:
             return row + 1, col * 2 + 1
 
+    def change_from_loc(self, x, y):
+        if x % 2 == 0 and y % 2 == 0:
+            return 128
+        if (self.should_reverse ^ 1 == 0):
+            return (x - 2) * 8 + (y // 2 - 1)
+        else:
+            if x % 2 == 0:
+                return (16 - x) * 8 + (y // 2 - 1)
+            else:
+                return (18 - x) * 8 + (y // 2 - 1)
+
     def action(self, kind):
         if kind < 128:
             x, y = self.wall_pos(kind)
@@ -175,7 +201,12 @@ class Quoridor(object):
             dis, path = self.findPath(0)
             x, y = path
         result = self.step(x, y, 0)
+        opp_state = self.state(1)
         if result != 2:
-            return copy.deepcopy(self.state(0)), copy.deepcopy(result)
+            return copy.deepcopy(self.state(0)), copy.deepcopy(result), copy.deepcopy(opp_state), copy.deepcopy(-1)
         result = self.step_ai()
-        return copy.deepcopy(self.state(0)), copy.deepcopy(result)
+        xx, yy = map(int, self.ins.split())
+        print(xx, yy)
+        k = self.change_from_loc(xx, yy) if result == 2 else -1
+        print(k)
+        return copy.deepcopy(self.state(0)), copy.deepcopy(result), copy.deepcopy(opp_state), copy.deepcopy(k)
