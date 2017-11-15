@@ -45,8 +45,8 @@ class Quoridor(object):
         self.steps = 0
         self.nw = Board(self.record_json)
         self.json_out = open('result' + str(self.pros) + '.json', 'w')
-        # self.should_reverse = turn = random.randint(0, 1)
-        self.should_reverse = turn = 0
+        self.should_reverse = turn = random.randint(0, 1)
+        # self.should_reverse = turn = 0
         self.record_json['id'] = [turn, 1 - turn]
         self.record_json['step'] = []
         self.ins = ""
